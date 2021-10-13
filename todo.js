@@ -32,21 +32,40 @@ const onClickedAdd = () => {
     //完了ボタン押したときのイベント
     completeButton.addEventListener('click', () => {
 
-        //まずは押されたその場所から消す。
+        //ボタンに所属しているliを取得する
         const completeTarget = completeButton.closest("li");
+
+        //未完了のulを取得してそこから完了ボタンのliを消す
         document.getElementById("incomplete").removeChild(completeTarget);
 
-        //完了リストに追加する
-        const addTarget = completeButton.closest("div")
-        
-        //div内のpタグの中身まで取得する
-        const text = addTarget.firstElementChild.innerText;
-        
-        //div以下を初期化
-        
+        //div以下を初期化する
+        div.textContent = null;
+        console.log(div);
 
-        //完了フェーズに移行する
+        console.log(completeButton);
+        const ul = document.getElementById("complete");
+        
+        //完了領域にコードを入れる。
+        ul.appendChild(li);
+        li.appendChild(div);
+        div.appendChild(p);
+        div.appendChild(returnButton);
+    });
+    
 
+    //戻すボタンを生成
+    const returnButton = document.createElement("button");
+    returnButton.className = "return-button";
+    returnButton.innerText = "戻す";
+    console.log(returnButton);
+
+    //戻すボタン押したときのイベント
+    returnButton.addEventListener('click', () => {
+
+        //戻るボタンのli要素丸ごとを取得
+        const returnTarget = returnButton.closest("li");
+        //完了ul内から戻る領域のliを削除
+        document.getElementById('complete').removeChild(returnTarget);
     });
 
     //button作成してクラスの名前を付与する　+　クリックイベントの用意
@@ -57,10 +76,12 @@ const onClickedAdd = () => {
     //削除ボタン押したときのイベント
     incompleteButton.addEventListener('click', () => {
 
-        //消す対象のdivの親要素であるli要素丸ごとを取得する
+        //消す対象のdivの親要素であるli要素丸ごとを取得
         const deleteTarget = incompleteButton.closest("li");
         //未完了のulからli丸ごと消す。
         document.getElementById("incomplete").removeChild(deleteTarget);
+
+
     });
 
     //未完了でのDOM作成
@@ -71,8 +92,6 @@ const onClickedAdd = () => {
     div.appendChild(completeButton);
     div.appendChild(incompleteButton);
 };
-
-//未完了
 
 //追加ボタンを取得して押すとOnclickedAddの効果が出る。
 document.getElementById('input-button').addEventListener('click', () => {
