@@ -1,4 +1,5 @@
-//クリックしたときの中身を作成
+
+//追加ボタンを押したときの中身を作成
 const onClickedAdd = () => {
 
     //テキストの値を取得して、次、文字を打つ際に邪魔にならないように値を初期化する
@@ -22,7 +23,7 @@ const onClickedAdd = () => {
     //未完了のulを作成してクラスの名前を付与する
     const ulIncomplete = document.getElementById("incomplete");
 
-    //------------------------------完了、削除ボタンの作成----------------------------------------
+    //------------------完了ボタン押したときのイベント-------------------------------
 
     //button作成してクラスの名前を付与する　+　クリックイベントの用意
     const completeButton = document.createElement("button");
@@ -40,48 +41,69 @@ const onClickedAdd = () => {
 
         //div以下を初期化する
         div.textContent = null;
-        console.log(div);
 
-        console.log(completeButton);
-        const ul = document.getElementById("complete");
-        
+        const incompleteUl = document.getElementById("complete");
+
         //完了領域にコードを入れる。
-        ul.appendChild(li);
+        incompleteUl.appendChild(li);
         li.appendChild(div);
         div.appendChild(p);
         div.appendChild(returnButton);
     });
-    
+
+
+    //------------------戻すボタン押したときのイベント-------------------------------
 
     //戻すボタンを生成
     const returnButton = document.createElement("button");
     returnButton.className = "return-button";
     returnButton.innerText = "戻す";
-    console.log(returnButton);
 
-    //戻すボタン押したときのイベント
     returnButton.addEventListener('click', () => {
 
         //戻るボタンのli要素丸ごとを取得
         const returnTarget = returnButton.closest("li");
         //完了ul内から戻る領域のliを削除
         document.getElementById('complete').removeChild(returnTarget);
+
+        //組み立てる必要があるので、div以下をまず初期化させる
+        div.textContent = null;
+
+        //未完了のulを持ってくる
+        const ul = document.getElementById('incomplete');
+
+        //組み立てる必要があるので、div以下をまず初期化させる
+        div.textContent = null;
+
+        //ボタンの生成　(完了と削除)
+
+        //ボタンの初期化
+        console.log(p);
+        ul.appendChild(li);
+        div.appendChild(p);
+        div.appendChild(completeButton);
+        div.appendChild(deleteButton);
+
+        //ボタンの初期化
+
+        console.log(completeButton);
+
+        ul.appendChild(li);
     });
 
+    //------------------削除ボタン押したときのイベント-------------------------------
     //button作成してクラスの名前を付与する　+　クリックイベントの用意
-    const incompleteButton = document.createElement("button");
-    incompleteButton.innerText = "削除";
-    incompleteButton.className = "incomplete-button";
+    const deleteButton = document.createElement("button");
+    deleteButton.innerText = "削除";
+    deleteButton.className = "incomplete-button";
 
     //削除ボタン押したときのイベント
-    incompleteButton.addEventListener('click', () => {
+    deleteButton.addEventListener('click', () => {
 
-        //消す対象のdivの親要素であるli要素丸ごとを取得
-        const deleteTarget = incompleteButton.closest("li");
+        //消す対象のdivの親要素であるli要素丸ごとを取得する
+        const deleteTarget = deleteButton.closest("li");
         //未完了のulからli丸ごと消す。
         document.getElementById("incomplete").removeChild(deleteTarget);
-
-
     });
 
     //未完了でのDOM作成
@@ -90,10 +112,18 @@ const onClickedAdd = () => {
     li.appendChild(div);
     div.appendChild(p);
     div.appendChild(completeButton);
-    div.appendChild(incompleteButton);
+    div.appendChild(deleteButton);
 };
 
-//追加ボタンを取得して押すとOnclickedAddの効果が出る。
+//追加ボタンを押すとonClickedAdd関数を発動させる。
 document.getElementById('input-button').addEventListener('click', () => {
+
+    //空文字の時にエラーが出るのでアラートを出す。
+    if (document.getElementById('add-text').value === "") {
+        alert("何も文字が入っていません");
+        //追加に行かないように処理を停止させる
+        return false;
+    }
+
     onClickedAdd();
 });
